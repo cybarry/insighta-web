@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Account | Insighta Labs+</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+        }
+
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+
+        nav a {
+            color: #8b949e;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 0 32px;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 32px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .role {
+            color: #58a6ff;
+            font-size: 13px;
+            background: #0d2137;
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #21262d;
+            font-size: 14px;
+        }
+
+        .label {
+            color: #8b949e;
+        }
+
+        .btn-logout {
+            margin-top: 24px;
+            background: #da3633;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="brand">Insighta Labs+</div>
+        <div>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/profiles.html">Profiles</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card" id="card">Loading...</div>
+    </div>
+    <script type="module">
+        import { requireAuth } from './js/auth.js';
+        await requireAuth();
+
+        const API = 'https://your-backend.railway.app';
+
+        const res = await fetch(`${API}/auth/me`, {
+            credentials: 'include',
+            headers: { 'X-API-Version': '1' }
+        });
+        const data = await res.json();
+        const u = data.data;
+
+        document.getElementById('card').innerHTML = `
+      <img src="${u.avatar_url}" class="avatar">
+      <h2>@${u.username}</h2>
+      <div class="role">${u.role}</div>
+      ${[['Email', u.email || '—'], ['GitHub ID', u.github_id],
+            ['Member since', new Date(u.created_at).toLocaleDateString()]
+            ].map(([l, v]) => `<div class="row"><span class="label">${l}</span><span>${v}</span></div>`).join('')}
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    `;
+
+        window.logout = function () {
+            fetch(`${API}/auth/logout`, { method: 'POST', credentials: 'include' })
+                .finally(() => window.location.href = '/index.html');
+        };
+    </script>
+</body>
+
+</html>
