@@ -132,7 +132,7 @@
 
         await requireAuth();
 
-        const API = 'https://your-backend.railway.app';
+        const API = 'https://insighta-web-production-418d.up.railway.app';
 
         const [all, male, female] = await Promise.all([
             get('/api/profiles', { limit: 1 }),
