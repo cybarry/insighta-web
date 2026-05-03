@@ -1,0 +1,35 @@
+{
+    "rewrites": [
+        {
+            "source": "/dashboard",
+            "destination": "/dashboard.html"
+        },
+        {
+            "source": "/profiles",
+            "destination": "/profiles.html"
+        },
+        {
+            "source": "/search",
+            "destination": "/search.html"
+        },
+        {
+            "source": "/account",
+            "destination": "/account.html"
+        },
+        {
+            "source": "/profile",
+            "destination": "/profile.html"
+        }
+    ],
+    "headers": [
+        {
+            "source": "**",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        }
+    ]
+}

@@ -86,14 +86,21 @@
             Continue with GitHub
         </a>
     </div>
-    <script>
-        const API = 'https://insighta-backend-production-b142.up.railway.app';
-        function login() { window.location.href = `${API}/auth/github`; }
+    <script type="module">
+        import { requireAuth } from './js/auth.js';
+        import { getTokens } from './js/auth.js';
 
-        // Check if already logged in
-        fetch(`${API}/auth/refresh`, { method: 'POST', credentials: 'include' })
-            .then(r => r.ok ? window.location.href = '/dashboard.html' : null)
-            .catch(() => { });
+        const API = 'https://insighta-backend-production-b142.up.railway.app';
+
+        // If already logged in, go to dashboard
+        const { access_token } = getTokens();
+        if (access_token) {
+            window.location.href = '/dashboard.html';
+        }
+
+        window.login = function () {
+            window.location.href = `${API}/auth/github`;
+        };
     </script>
 </body>
 
