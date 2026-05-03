@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insighta Labs+ | Login</title>
+    <meta name="description" content="Insighta Labs+ — Secure Demographic Intelligence Platform. Login with GitHub to access profiles, analytics, and search.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,144 +16,228 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0d1117;
             color: #e6edf3;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(88, 166, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(35, 134, 54, 0.06) 0%, transparent 40%);
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 24px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            color: #58a6ff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #58a6ff;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .card {
             background: #161b22;
             border: 1px solid #30363d;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 48px 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #1f6feb, #388bfd);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            box-shadow: 0 4px 16px rgba(56, 139, 253, 0.3);
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
-            color: #58a6ff;
+            background: linear-gradient(135deg, #e6edf3, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 8px;
         }
 
         .subtitle {
-            color: #8b949e;
+            color: #7d8590;
             font-size: 14px;
-            margin-bottom: 32px;
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            color: #484f58;
+            font-size: 12px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #30363d;
         }
 
         .btn-github {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             background: #238636;
             color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 14px 24px;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
             width: 100%;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
         }
 
         .btn-github:hover {
             background: #2ea043;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(46, 160, 67, 0.4);
+        }
+
+        .btn-github:active {
+            transform: translateY(0);
         }
 
         .btn-github svg {
             width: 20px;
             height: 20px;
             fill: white;
+            flex-shrink: 0;
+        }
+
+        .features {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+            justify-content: center;
+        }
+
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #484f58;
+            font-size: 12px;
+        }
+
+        .feature-icon {
+            font-size: 18px;
+        }
+
+        .error-msg {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            color: #f85149;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="card">
-        <div class="logo">Insighta Labs+</div>
-        <div class="subtitle">Demographic Intelligence Platform</div>
-        <a href="#" onclick="login()" class="btn-github">
-            <svg viewBox="0 0 16 16">
-                <path
-                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-            </svg>
-            Continue with GitHub
-        </a>
+    <div class="wrapper">
+        <div class="badge">Insighta Labs+ Platform</div>
+        <div class="card">
+            <div class="logo-icon">🔬</div>
+            <div class="logo">Insighta Labs+</div>
+            <p class="subtitle">Demographic Intelligence Platform<br>Secure access for analysts &amp; engineers</p>
+
+            <div id="error" class="error-msg"></div>
+
+            <div class="divider">Continue with</div>
+
+            <a href="https://insighta-backend-production-b142.up.railway.app/auth/github" id="login-btn" class="btn-github">
+                <svg viewBox="0 0 16 16">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                Continue with GitHub
+            </a>
+
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🔒</span>
+                    <span>HTTP-only Cookies</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🔄</span>
+                    <span>Auto Token Refresh</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">👥</span>
+                    <span>Role-Based Access</span>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script>
-        const API = 'https://insighta-backend-production-b142.up.railway.app';
-
-        // Step 1 — grab tokens from URL if coming from OAuth
+        // Show error if redirected back with ?error=...
         const params = new URLSearchParams(window.location.search);
-        const urlAccess = params.get('access_token');
-        const urlRefresh = params.get('refresh_token');
-
-        if (urlAccess && urlRefresh) {
-            localStorage.setItem('access_token', urlAccess);
-            localStorage.setItem('refresh_token', urlRefresh);
-            // Clean the URL
-            window.history.replaceState({}, '', '/dashboard.html');
+        const err = params.get('error');
+        if (err) {
+            const el = document.getElementById('error');
+            el.textContent = decodeURIComponent(err);
+            el.style.display = 'block';
+            window.history.replaceState({}, '', '/index.html');
         }
-
-        // Step 2 — check we have tokens
-        const accessToken = localStorage.getItem('access_token');
-        const refreshToken = localStorage.getItem('refresh_token');
-
-        if (!accessToken) {
-            window.location.href = '/index.html';
-        }
-
-        // Step 3 — load dashboard data
-        async function apiGet(endpoint, params = {}) {
-            const qs = new URLSearchParams(params).toString();
-            const url = qs ? `${API}${endpoint}?${qs}` : `${API}${endpoint}`;
-            const res = await fetch(url, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                    'X-API-Version': '1',
-                },
-            });
-            if (res.status === 401) {
-                window.location.href = '/index.html';
-                return null;
-            }
-            return res.json();
-        }
-
-        async function loadStats() {
-            const [all, male, female] = await Promise.all([
-                apiGet('/api/profiles', { limit: 1 }),
-                apiGet('/api/profiles', { gender: 'male', limit: 1 }),
-                apiGet('/api/profiles', { gender: 'female', limit: 1 }),
-            ]);
-
-            document.getElementById('total').textContent = all?.total ?? '—';
-            document.getElementById('male').textContent = male?.total ?? '—';
-            document.getElementById('female').textContent = female?.total ?? '—';
-        }
-
-        loadStats();
-
-        window.logout = function () {
-            const refresh_token = localStorage.getItem('refresh_token');
-            fetch(`${API}/auth/logout`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ refresh_token }),
-            }).finally(() => {
-                localStorage.clear();
-                window.location.href = '/index.html';
-            });
-        };
     </script>
 </body>
 

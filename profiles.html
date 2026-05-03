@@ -3,16 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profiles | Insighta Labs+</title>
+    <meta name="description" content="Browse and filter demographic profiles on Insighta Labs+.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0d1117;
             color: #e6edf3;
         }
@@ -20,51 +20,95 @@
         nav {
             background: #161b22;
             border-bottom: 1px solid #30363d;
-            padding: 16px 32px;
+            padding: 0 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .brand {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            color: #58a6ff;
+            background: linear-gradient(135deg, #e6edf3, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
+        .nav-links { display: flex; align-items: center; gap: 4px; }
 
         nav a {
-            color: #8b949e;
+            color: #7d8590;
             text-decoration: none;
-            margin-left: 24px;
             font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.15s;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 32px;
+        nav a:hover { color: #e6edf3; background: #21262d; }
+        nav a.active { color: #58a6ff; background: rgba(88, 166, 255, 0.1); }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid #30363d;
+            color: #f85149;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
         }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 24px;
+        .btn-logout:hover { background: rgba(248, 81, 73, 0.1); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 32px; }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
         }
+
+        .page-header h1 { font-size: 24px; font-weight: 700; }
 
         .filters {
             display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
             flex-wrap: wrap;
+            margin-bottom: 24px;
+            padding: 16px 20px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            align-items: flex-end;
         }
 
-        .filters select,
-        .filters input {
-            background: #161b22;
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-label { font-size: 11px; color: #7d8590; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .filters select, .filters input {
+            background: #0d1117;
             border: 1px solid #30363d;
             color: #e6edf3;
             padding: 8px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.15s;
+            min-width: 130px;
+        }
+
+        .filters select:focus, .filters input:focus {
+            outline: none;
+            border-color: #58a6ff;
         }
 
         .btn {
@@ -72,145 +116,255 @@
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 9px 18px;
+            padding: 8px 18px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.15s;
+            height: 36px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
+        .btn:hover { background: #2ea043; }
+
+        .btn-secondary {
+            background: transparent;
+            color: #7d8590;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+            height: 36px;
         }
+
+        .btn-secondary:hover { color: #e6edf3; border-color: #484f58; }
+
+        .table-wrap {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
 
         th {
             background: #161b22;
-            color: #8b949e;
+            color: #7d8590;
             padding: 12px 16px;
             text-align: left;
             border-bottom: 1px solid #30363d;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #21262d;
-        }
+        td { padding: 13px 16px; border-bottom: 1px solid #21262d; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(88, 166, 255, 0.03); }
 
-        tr:hover td {
-            background: #161b22;
-        }
+        td a { color: #58a6ff; text-decoration: none; font-weight: 500; }
+        td a:hover { text-decoration: underline; }
 
-        td a {
-            color: #58a6ff;
-            text-decoration: none;
+        .gender-m { color: #388bfd; }
+        .gender-f { color: #d2a8ff; }
+
+        .age-group {
+            display: inline-block;
+            background: #21262d;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #7d8590;
         }
 
         .pagination {
             display: flex;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 8px;
+            margin-top: 20px;
             align-items: center;
+            justify-content: space-between;
         }
 
-        .pagination button {
+        .pagination-btns { display: flex; gap: 8px; }
+
+        .page-btn {
             background: #21262d;
             color: #e6edf3;
             border: 1px solid #30363d;
             border-radius: 6px;
             padding: 8px 16px;
             cursor: pointer;
-        }
-
-        .pagination button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        #info {
-            color: #8b949e;
             font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
         }
+
+        .page-btn:hover:not(:disabled) { border-color: #58a6ff; color: #58a6ff; }
+        .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        #page-info { color: #7d8590; font-size: 13px; }
+
+        .empty-state {
+            padding: 60px 32px;
+            text-align: center;
+            color: #7d8590;
+        }
+
+        .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
     </style>
 </head>
 
 <body>
     <nav>
         <div class="brand">Insighta Labs+</div>
-        <div>
+        <div class="nav-links">
             <a href="/dashboard.html">Dashboard</a>
+            <a href="/profiles.html" class="active">Profiles</a>
             <a href="/search.html">Search</a>
             <a href="/account.html">Account</a>
+            <button class="btn-logout" onclick="doLogout()">Logout</button>
         </div>
     </nav>
+
     <div class="container">
-        <h1>Profiles</h1>
-        <div class="filters">
-            <select id="gender">
-                <option value="">All Genders</option>
-                <option>male</option>
-                <option>female</option>
-            </select>
-            <select id="age_group">
-                <option value="">All Age Groups</option>
-                <option>child</option>
-                <option>teenager</option>
-                <option>adult</option>
-                <option>senior</option>
-            </select>
-            <input id="country_id" placeholder="Country ID (e.g. NG)" maxlength="2">
-            <button class="btn" onclick="load(1)">Filter</button>
+        <div class="page-header">
+            <h1>Profiles</h1>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Age</th>
-                    <th>Age Group</th>
-                    <th>Country</th>
-                </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-        </table>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label" for="gender">Gender</label>
+                <select id="gender">
+                    <option value="">All Genders</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label" for="age_group">Age Group</label>
+                <select id="age_group">
+                    <option value="">All Ages</option>
+                    <option value="child">Child</option>
+                    <option value="teenager">Teenager</option>
+                    <option value="adult">Adult</option>
+                    <option value="senior">Senior</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label" for="country_id">Country Code</label>
+                <input id="country_id" placeholder="e.g. NG" maxlength="2" style="width:100px">
+            </div>
+            <div class="filter-group">
+                <label class="filter-label" for="sort_by">Sort By</label>
+                <select id="sort_by">
+                    <option value="created_at">Created</option>
+                    <option value="age">Age</option>
+                    <option value="gender_probability">Gender Prob.</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label" for="order">Order</label>
+                <select id="order" style="min-width:90px">
+                    <option value="desc">Desc</option>
+                    <option value="asc">Asc</option>
+                </select>
+            </div>
+            <button class="btn" onclick="loadPage(1)">Filter</button>
+            <button class="btn-secondary" onclick="resetFilters()">Reset</button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Age Group</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <div id="empty" class="empty-state" style="display:none">
+                <div class="icon">🔍</div>
+                <p>No profiles found</p>
+            </div>
+        </div>
+
         <div class="pagination">
-            <button id="prev" onclick="load(page-1)" disabled>← Prev</button>
-            <span id="info"></span>
-            <button id="next" onclick="load(page+1)" disabled>Next →</button>
+            <span id="page-info"></span>
+            <div class="pagination-btns">
+                <button class="page-btn" id="prev" onclick="loadPage(window._page - 1)" disabled>← Prev</button>
+                <button class="page-btn" id="next" onclick="loadPage(window._page + 1)" disabled>Next →</button>
+            </div>
         </div>
     </div>
+
     <script type="module">
         import { get } from './js/api.js';
-        import { requireAuth } from './js/auth.js';
-        await requireAuth();
-        window.page = 1;
+        import { requireAuth, logout } from './js/auth.js';
 
-        window.load = async function (p) {
-            window.page = p;
-            const params = { page: p, limit: 20 };
-            const g = document.getElementById('gender').value;
-            const ag = document.getElementById('age_group').value;
-            const c = document.getElementById('country_id').value;
-            if (g) params.gender = g;
-            if (ag) params.age_group = ag;
-            if (c) params.country_id = c.toUpperCase();
+        window.doLogout = logout;
+        window._page = 1;
+
+        await requireAuth();
+
+        window.loadPage = async function (p) {
+            window._page = p;
+            const params = {
+                page: p,
+                limit: 20,
+                gender: document.getElementById('gender').value,
+                age_group: document.getElementById('age_group').value,
+                country_id: document.getElementById('country_id').value.toUpperCase(),
+                sort_by: document.getElementById('sort_by').value,
+                order: document.getElementById('order').value,
+            };
 
             const res = await get('/api/profiles', params);
             if (!res) return;
 
             const tbody = document.getElementById('tbody');
-            tbody.innerHTML = res.data.map(p =>
-                `<tr><td><a href="/profile.html?id=${p.id}">${p.name}</a></td>
-         <td>${p.gender}</td><td>${p.age}</td>
-         <td>${p.age_group}</td><td>${p.country_id}</td></tr>`
-            ).join('');
+            const empty = document.getElementById('empty');
 
-            document.getElementById('info').textContent =
-                `Page ${res.page} of ${res.total_pages} — ${res.total} total`;
+            if (!res.data?.length) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+            } else {
+                empty.style.display = 'none';
+                tbody.innerHTML = res.data.map(p => `
+                    <tr>
+                        <td><a href="/profile.html?id=${p.id}">${p.name}</a></td>
+                        <td class="gender-${p.gender?.[0]}">${p.gender}</td>
+                        <td>${p.age}</td>
+                        <td><span class="age-group">${p.age_group}</span></td>
+                        <td>${p.country_id}</td>
+                    </tr>
+                `).join('');
+            }
+
+            document.getElementById('page-info').textContent =
+                `Page ${res.page} of ${res.total_pages} — ${res.total.toLocaleString()} total`;
             document.getElementById('prev').disabled = res.page <= 1;
             document.getElementById('next').disabled = res.page >= res.total_pages;
         };
 
-        load(1);
+        window.resetFilters = function () {
+            document.getElementById('gender').value = '';
+            document.getElementById('age_group').value = '';
+            document.getElementById('country_id').value = '';
+            document.getElementById('sort_by').value = 'created_at';
+            document.getElementById('order').value = 'desc';
+            loadPage(1);
+        };
+
+        loadPage(1);
     </script>
 </body>
 

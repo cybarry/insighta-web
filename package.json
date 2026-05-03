@@ -1,9 +1,18 @@
 {
   "name": "insighta-web",
   "version": "1.0.0",
+  "description": "Insighta Labs+ Web Portal",
   "scripts": {
-    "start": "npx serve . -p 3001 -s"
+    "start": "serve . -p 3001",
+    "dev": "serve . -p 5500"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cybarry/insighta-web.git"
+  },
+  "keywords": [],
+  "author": "Cybarry",
+  "license": "ISC",
   "dependencies": {
     "serve": "^14.2.0"
   }

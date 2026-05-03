@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-check:
+    name: Lint & HTML Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Syntax check JS modules
+        run: |
+          node --check js/auth.js
+          node --check js/api.js
+
+      - name: Verify HTML files exist and are non-empty
+        run: |
+          for f in index.html dashboard.html profiles.html profile.html search.html account.html; do
+            if [ ! -s "$f" ]; then echo "Missing or empty: $f"; exit 1; fi
+            echo "✅ $f"
+          done
+
+      - name: Serve and check (smoke test)
+        run: |
+          npx serve . -p 5500 &
+          sleep 3
+          curl -f http://localhost:5500/ || exit 1
+          echo "✅ Site is serving"
