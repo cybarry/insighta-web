@@ -25,45 +25,29 @@ export function clearTokens() {
 
 /**
  * Call at the top of every protected page.
- * Grabs tokens from URL if just redirected from OAuth, then validates session.
+ * - If coming from OAuth redirect: saves tokens from URL, cleans the URL.
+ * - If returning user: checks localStorage for existing token.
+ * - Redirects to login if no token found.
+ * NOTE: Token refresh on expiry is handled automatically by api.js on 401.
  */
 export async function requireAuth() {
-    // 1. Capture tokens from URL after OAuth redirect
+    // 1. Capture tokens from URL after OAuth redirect (access_token=...&refresh_token=...)
     const params = new URLSearchParams(window.location.search);
     const urlAccess = params.get('access_token');
     const urlRefresh = params.get('refresh_token');
 
     if (urlAccess) {
         saveTokens(urlAccess, urlRefresh);
+        // Remove tokens from URL — don't leave them in browser history
         window.history.replaceState({}, '', window.location.pathname);
+        return; // Tokens are brand new from OAuth, no need to validate
     }
 
-    const { access_token, refresh_token } = getTokens();
-
-    if (!access_token) {
+    // 2. Returning user — check localStorage
+    if (!localStorage.getItem('access_token')) {
         window.location.href = '/index.html';
-        return;
     }
-
-    // 2. Try to refresh to get a fresh token (validates session)
-    if (refresh_token) {
-        try {
-            const res = await fetch(`${API}/auth/refresh`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ refresh_token }),
-            });
-            if (res.ok) {
-                const data = await res.json();
-                saveTokens(data.access_token, data.refresh_token);
-                return; // ✅ Session alive
-            }
-        } catch { /* network error — fall through */ }
-    }
-
-    // 3. Both failed — redirect to login
-    clearTokens();
-    window.location.href = '/index.html';
+    // Has a stored token — proceed. api.js will auto-refresh on 401 silently.
 }
 
 /**
