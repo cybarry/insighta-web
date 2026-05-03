@@ -243,7 +243,7 @@
 
         await requireAuth();
 
-        // Single call to /auth/me using cookie-based auth from api.js
+        // Single authenticated call to /auth/me via api.js (sends Authorization header)
         const res = await get('/auth/me');
         const u = res?.data;
 

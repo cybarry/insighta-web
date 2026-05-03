@@ -214,7 +214,7 @@
             <div class="features">
                 <div class="feature">
                     <span class="feature-icon">🔒</span>
-                    <span>HTTP-only Cookies</span>
+                    <span>Secure OAuth</span>
                 </div>
                 <div class="feature">
                     <span class="feature-icon">🔄</span>
@@ -229,6 +229,11 @@
     </div>
 
     <script>
+        // If already logged in, skip to dashboard
+        if (localStorage.getItem('access_token')) {
+            window.location.href = '/dashboard.html';
+        }
+
         // Show error if redirected back with ?error=...
         const params = new URLSearchParams(window.location.search);
         const err = params.get('error');
