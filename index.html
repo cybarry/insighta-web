@@ -86,20 +86,70 @@
             Continue with GitHub
         </a>
     </div>
-    <script type="module">
-        import { requireAuth } from './js/auth.js';
-        import { getTokens } from './js/auth.js';
-
+    <script>
         const API = 'https://insighta-backend-production-b142.up.railway.app';
 
-        // If already logged in, go to dashboard
-        const { access_token } = getTokens();
-        if (access_token) {
-            window.location.href = '/dashboard.html';
+        // Step 1 — grab tokens from URL if coming from OAuth
+        const params = new URLSearchParams(window.location.search);
+        const urlAccess = params.get('access_token');
+        const urlRefresh = params.get('refresh_token');
+
+        if (urlAccess && urlRefresh) {
+            localStorage.setItem('access_token', urlAccess);
+            localStorage.setItem('refresh_token', urlRefresh);
+            // Clean the URL
+            window.history.replaceState({}, '', '/dashboard.html');
         }
 
-        window.login = function () {
-            window.location.href = `${API}/auth/github`;
+        // Step 2 — check we have tokens
+        const accessToken = localStorage.getItem('access_token');
+        const refreshToken = localStorage.getItem('refresh_token');
+
+        if (!accessToken) {
+            window.location.href = '/index.html';
+        }
+
+        // Step 3 — load dashboard data
+        async function apiGet(endpoint, params = {}) {
+            const qs = new URLSearchParams(params).toString();
+            const url = qs ? `${API}${endpoint}?${qs}` : `${API}${endpoint}`;
+            const res = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    'X-API-Version': '1',
+                },
+            });
+            if (res.status === 401) {
+                window.location.href = '/index.html';
+                return null;
+            }
+            return res.json();
+        }
+
+        async function loadStats() {
+            const [all, male, female] = await Promise.all([
+                apiGet('/api/profiles', { limit: 1 }),
+                apiGet('/api/profiles', { gender: 'male', limit: 1 }),
+                apiGet('/api/profiles', { gender: 'female', limit: 1 }),
+            ]);
+
+            document.getElementById('total').textContent = all?.total ?? '—';
+            document.getElementById('male').textContent = male?.total ?? '—';
+            document.getElementById('female').textContent = female?.total ?? '—';
+        }
+
+        loadStats();
+
+        window.logout = function () {
+            const refresh_token = localStorage.getItem('refresh_token');
+            fetch(`${API}/auth/logout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refresh_token }),
+            }).finally(() => {
+                localStorage.clear();
+                window.location.href = '/index.html';
+            });
         };
     </script>
 </body>
