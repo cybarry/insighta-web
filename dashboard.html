@@ -127,8 +127,8 @@
         <a href="/profiles.html" class="btn">View All Profiles →</a>
     </div>
     <script type="module">
+        import { requireAuth, logout } from './js/auth.js';
         import { get } from './js/api.js';
-        import { requireAuth } from './js/auth.js';
 
         await requireAuth();
 

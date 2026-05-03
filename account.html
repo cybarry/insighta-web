@@ -110,7 +110,8 @@
         <div class="card" id="card">Loading...</div>
     </div>
     <script type="module">
-        import { requireAuth } from './js/auth.js';
+        import { requireAuth, logout } from './js/auth.js';
+        import { get } from './js/api.js';
         await requireAuth();
 
         const API = 'https://insighta-backend-production-b142.up.railway.app';
@@ -119,7 +120,7 @@
             credentials: 'include',
             headers: { 'X-API-Version': '1' }
         });
-        const data = await res.json();
+        const data = await get('/auth/me');
         const u = data.data;
 
         document.getElementById('card').innerHTML = `
@@ -132,10 +133,7 @@
       <button class="btn-logout" onclick="logout()">Logout</button>
     `;
 
-        window.logout = function () {
-            fetch(`${API}/auth/logout`, { method: 'POST', credentials: 'include' })
-                .finally(() => window.location.href = '/index.html');
-        };
+        window.logout = logout;
     </script>
 </body>
 
