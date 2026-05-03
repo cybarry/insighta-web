@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Insighta Labs+ Web Portal",
   "scripts": {
-    "start": "serve . -p 3001",
+    "start": "serve .",
     "dev": "serve . -p 5500"
   },
   "repository": {
